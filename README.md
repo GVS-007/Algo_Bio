@@ -1,6 +1,4 @@
-# Model 1
-
-## TCR-Epitope Binding Prediction
+# Algorithms in Computational Biology
 
 ## Introduction
 
@@ -26,30 +24,31 @@ The immune system relies on T-cell receptors (TCRs) binding to epitopes (peptide
 
 **Final Results for the Base Model:**
 
-| Split  | Precision | Recall   | F1-Score | Accuracy  |
-|--------|-----------|----------|----------|-----------|
-| random | 0.767983  | 0.666555 | 0.713684 | 0.732751  |
-| tcr    | 0.767004  | 0.666823 | 0.713414 | 0.733232  |
-| epi    | 0.728438  | 0.557494 | 0.631604 | 0.674830  |
+| Split  | Precision | Recall   | F1-Score | Accuracy |
+|--------|-----------|----------|----------|----------|
+| random | 0.767983  | 0.666555 | 0.713684 | 0.732751 |
+| tcr    | 0.767004  | 0.666823 | 0.713414 | 0.733232 |
+| epi    | 0.728438  | 0.557494 | 0.631604 | 0.674830 |
 
 ### Cross-Attention Model Results
 
-| Split  | Max_Length | Precision | Recall   | F1-Score | Accuracy  |
-|--------|------------|-----------|----------|----------|-----------|
-| random | 3          | 0.656708 | 0.151014 | 0.245560 | 0.536314  |
-| random | 5          | 0.575393 | 0.692836 | 0.628677 | 0.591027  |
-| random | 7          | 0.634839 | 0.624867 | 0.629813 | 0.632941  |
-| tcr    | 3          | 0.990068 | 0.073389 | 0.136648 | 0.538235  |
-| tcr    | 5          | 0.572338 | 0.737400 | 0.644468 | 0.594874  |
-| tcr    | 7          | 0.628097 | 0.638880 | 0.633442 | 0.631818  |
-| epi    | 3          | 0.915254 | 0.013587 | 0.026777 | 0.506165  |
-| epi    | 5          | 0.529552 | 0.780005 | 0.630829 | 0.543529  |
-| epi    | 7          | 0.580721 | 0.497190 | 0.535719 | 0.569110  |
+| Split  | Max_Length | Precision | Recall   | F1-Score | Accuracy |
+|--------|------------|-----------|----------|----------|----------|
+| random | 3          | 0.656708 | 0.151014 | 0.245560 | 0.536314 |
+| random | 5          | 0.575393 | 0.692836 | 0.628677 | 0.591027 |
+| random | 7          | 0.634839 | 0.624867 | 0.629813 | 0.632941 |
+| tcr    | 3          | 0.990068 | 0.073389 | 0.136648 | 0.538235 |
+| tcr    | 5          | 0.572338 | 0.737400 | 0.644468 | 0.594874 |
+| tcr    | 7          | 0.628097 | 0.638880 | 0.633442 | 0.631818 |
+| epi    | 3          | 0.915254 | 0.013587 | 0.026777 | 0.506165 |
+| epi    | 5          | 0.529552 | 0.780005 | 0.630829 | 0.543529 |
+| epi    | 7          | 0.580721 | 0.497190 | 0.535719 | 0.569110 |
 
 These results show that the best performance can vary based on the sequence length and data splitting method. Overall, the cross-attention model with certain configurations improves upon the simpler baseline in certain splits and settings.
 
 ## Repository Structure
 
+```bash
 .
 ├── base_model.py           # Code for the base model
 ├── cross_attention.py      # Code for the cross-attention model
@@ -60,6 +59,83 @@ These results show that the best performance can vary based on the sequence leng
 │   ├── best_model_tcr.pt
 │   ├── best_model_epi.pt
 │   ├── base_best_model_random.pt
-│   ├── … (other saved models)
+│   ├── ... (other saved models)
 └── data/
-└── TCREpitopePairs.csv # The dataset (not included in repo, must be provided)
+    └── TCREpitopePairs.csv # The dataset (not included in repo, must be provided)
+```
+## Setup
+
+### Conda Environment
+
+Create and activate the conda environment:
+
+```bash
+conda env create -f pytorch_a100_env.yml
+conda activate pytorch_a100_env
+```
+
+Ensure that the environment has all the required dependencies.
+
+## Running Experiments
+
+### Data Preperation
+
+- Place TCREpitopePairs.csv in the data/ directory.
+- Ensure the dataset has tcr, epi, and binding columns.
+
+Running the Base Model
+
+```bash
+python base_model.py
+```
+
+This script:
+- Generates embeddings for TCR and epitope sequences.
+- Trains the base model.
+- Saves model weights to models/base_best_model_<split>.pt.
+- Outputs evaluation metrics.
+
+
+Running the Cross-Attention Model
+
+```bash
+python cross_attention.py
+```
+
+This script:
+- Generates per-token embeddings.
+- Trains the cross-attention model.
+- Saves weights to models/best_model_<split>_len<max_length>.pt.
+- Outputs evaluation metrics for various splits and sequence lengths.
+
+
+
+## Using run.sh with SLURM
+
+For HPC environments:
+
+```bash
+sbatch run.sh
+```
+- Modify run.sh to request the appropriate resources (CPU, GPU, memory).
+- The script will run the model code using SLURM scheduling.
+
+## Saving and Loading Models
+
+The best models are saved in models/.
+
+To load a model:
+```bash
+from base_model import DeepNN  # or from cross_attention import BiDirectionalCrossAttentionNet
+import torch
+
+model = DeepNN(input_size, num_classes)
+model.load_state_dict(torch.load('models/base_best_model_random.pt'))
+model.eval()
+```
+Adjust paths and architectures as needed.
+
+## Acknowledgements
+- TCR-BERT: wukevin/tcr-bert
+- PyTorch: https://pytorch.org/
+- Transformers Library: https://huggingface.co/transformers/
