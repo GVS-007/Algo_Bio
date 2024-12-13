@@ -116,7 +116,7 @@ We computed Accuracy, Precision, Recall, F1-Score, and AUC over 5 runs to obtain
 ├── base_tcr_bert.py              # Baseline TCR-Bert model code
 ├── cross_attention_tcr_bert.py   # Cross-attention TCR-Bert model code
 ├── base_catELMo_model.py         # Baseline catELMo LSTM model code
-├── base_catELMo_transformer.py   # catELMo-Transformer model code
+├── catELMo_Transformers.py   # catELMo-Transformer model code
 ├── run.sh                        # SLURM script to run models on HPC
 ├── environment.yml               # Environment file
 └── data/
