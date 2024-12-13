@@ -119,18 +119,8 @@ We computed Accuracy, Precision, Recall, F1-Score, and AUC over 5 runs to obtain
 ├── base_catELMo_transformer.py   # catELMo-Transformer model code
 ├── run.sh                        # SLURM script to run models on HPC
 ├── environment.yml               # Environment file
-├── models/
-│   ├── best_base_model_epi_tcrBert.pt
-│   ├── best_base_model_tcr_tcrBert.pt
-│   ├── best_base_model_random_tcrBert.pt
-│   ├── best_model_epi_cross_attention_tcrBert.pt
-│   ├── best_model_tcr_cross_attention_tcrBert.pt
-│   ├── best_model_random_cross_attention_tcrBert.pt
-│   ├── best_catELMo.pt
-│   ├── best_catELMo_transformer.pt
-│   ├── ... (other saved models)
 └── data/
-    └── TCREpitopePairs.csv       # The dataset (not included, must be provided)
+    └── TCREpitopePairs.csv       # The dataset (not included, must be downloaded)
 
 ```
 ## Setup
