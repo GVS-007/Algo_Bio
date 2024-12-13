@@ -136,3 +136,7 @@ conda activate environment
 
 Ensure that the environment has all the required dependencies.
 
+## Model Checkpoints
+
+Google Drive link: https://drive.google.com/file/d/1XwSTX1SPKcNnd0Bq6xvoaBxaXSsEgvY_/view?usp=sharing
+
