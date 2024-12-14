@@ -1,0 +1,33 @@
+{
+    "char_cnn": {
+        "n_characters": 262,
+        "max_characters_per_token": 50,
+        "filters": [
+            [1, 32],
+            [2, 32],
+            [3, 64],
+            [4, 128],
+            [5, 256],
+            [6, 512],
+            [7, 512]
+        ],
+        "activation": "relu",
+        "embedding": {"dim": 16},
+        "n_highway": 2
+    },
+    "lstm": {
+        "dim": 512,
+        "projection_dim": 1024,
+        "n_layers": 2,
+        "use_skip_connections": true
+    },
+    "transformer": {
+        "num_heads": 8,
+        "ff_dim": 2048,
+        "num_layers": 6,
+        "dropout": 0.1,
+        "max_position_encoding": 1000,
+        "output_dim": 1024
+    },
+    "vocab_size": 50000
+}
